@@ -9,14 +9,17 @@
 <body>
    <h1>Car Reservation</h1>
     <h2 id="bizName"></h2>
-    
     <form id="reservationForm">
+        <label>Renter Name</label><br>
+        <input type="text" id="renterName" required></input><br><br>
         <div id="carSelection">
             <label>Car Type</label><br>
-            <select id="dropdown"></select>
+            <select id="dropdown" required>
+                <option disabled selected value="">Choose Vehicle</option> 
+            </select>
         </div>
         <div id="carInfo">
-            <h2>Room Info</h2>
+            <h2>Car Info</h2>
             <p>Available: <span id="available"></span></p>
             <p>Price: <span id="price"></span></p>
         </div>
