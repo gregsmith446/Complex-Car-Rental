@@ -13,11 +13,6 @@ var carRental = { //holds all the info
     ]
 };
 
-var renterData = { //a place for the data to go when submitted
-        name:[],
-        car:[],
-}
-
 //this adds the 2 car types - economy and SUV to the dropdown - *WORKS*
 for (var i = 0; i < carRental.cars.length; i++) {    
     var option = document.createElement("OPTION");
@@ -28,27 +23,37 @@ for (var i = 0; i < carRental.cars.length; i++) {
     console.log(option.value);
 }
 
-document.getElementById("dropdown").onchange = function(){ //this nameless function is assigned to the onchange event handler 
+document.getElementById("dropdown").onchange = function(){ //this connects the car price+avail data to the HTML *WORKS*
     var select = document.getElementById("dropdown");
     // console.log(select.value);
     document.getElementById("price").innerHTML = carRental.cars[select.value].price;
     document.getElementById("available").innerHTML = carRental.cars[select.value].available;
-    //this connects the car price+avail data to the HTML *WORKS*
+    
 }
 
-function formValidation(){ //form validation - prevent form submission until correct.
-	       // And Form Validation using an else if statement - Prevents form submission is form is incomplete - triggers an alert message
-	       var renterName = document.getElementById("renterName")
-	       if(option == "none"){
-	           alert("Please choose a car type");
-	       }
-	       else if(renterName == ""){
-	           alert("Please enter your first and last name");
-	       } else {
-	           document.getElementById('displayInfo').innerHTML = "Your reservation was successful!"
-	       }
-	       return false;
-	   }
+function formValidation(){ //form validation - triggers alert message and prevents form submission until terms and condition boxed is checked *WORKS*
+	    if (!document.getElementById("confirmation").checked) {
+        alert("You must agree to the terms and conditions");
+        event.preventDefault();
+	    }
+}
 
-// add a section here that will deduct a car from the amount when form is submitted.
-// cars.econcount--;
+function storeRenterData() { // this function serves multiple purposes
+    var grabValue = document.getElementById("dropdown").value; //grabs the dropdown value: economy or SUV
+    
+    if (carRental.cars[grabValue].available == 0) { //if there are no cars, it willtrigger a message to tell the user
+        alert("No cars available, choose a different car");
+        event.preventDefault();
+        return false;
+    }
+    else { //if there are cars, submitting will subrtract 1 car from the total
+        carRental.cars[grabValue].available--;
+        document.getElementById("available").innerHTML = "Available" + carRental.cars[grabValue].available;
+        var name = [];
+        var car = [];
+        name.push(document.getElementById("available").value);
+        car.push(carRental.cars[grabValue].name);
+        alert("Car booked!");
+        event.preventDefault();
+    }
+}    
