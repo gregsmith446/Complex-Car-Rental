@@ -1,9 +1,9 @@
-var carRental = { //holds all the info
+var carRental = { //an object that holds the car info
     cars: [
     {
         type: "Economy", 
         price: "$60",
-        available: 15
+        available: 10
     },
     {
         type: "SUV",
@@ -13,47 +13,47 @@ var carRental = { //holds all the info
     ]
 };
 
-//this adds the 2 car types - economy and SUV to the dropdown - *WORKS*
-for (var i = 0; i < carRental.cars.length; i++) {    
-    var option = document.createElement("OPTION");
-    option.text = carRental.cars[i].type;
-    document.getElementById("dropdown").appendChild(option);
-    option.setAttribute("value", i); //gives the options economy and SUV the value of 0 and 1; value is for us not for the user
-    option.setAttribute("id", "car" + i); //gives the economy and SUV options the car0 and car1 IDs
-    console.log(option.value);
+//*WORKS* adds the 2 car types - economy and SUV to a dropdown menu in HTML
+for (var i = 0; i < carRental.cars.length; i++) {  // a for loop with a variable i that loops through the object above
+    var option = document.createElement("OPTION"); //on the next line, this var becomes filled with the desired car info
+    option.text = carRental.cars[i].type; //this assigns car data to the options in the dropdown
+    document.getElementById("dropdown").appendChild(option); //actually adds the options to the dropdown with the append method
+    option.setAttribute("value", i); //sets the value of the options with 0 and 1; value is for us not for the user so name not important
+    option.setAttribute("id", "car" + i); //gives the economy and SUV options the ID of car0 and car1 IDs
+    // console.log(option.value);
 }
 
-document.getElementById("dropdown").onchange = function(){ //this connects the car price+avail data to the HTML *WORKS*
-    var select = document.getElementById("dropdown");
+document.getElementById("dropdown").onchange = function(){ //*WORKS* this connects the dropdown selection with displaying the data from the car object using an onchange function
+    var select = document.getElementById("dropdown"); //establishes a variable within the function (think scope)
     // console.log(select.value);
-    document.getElementById("price").innerHTML = carRental.cars[select.value].price;
+    document.getElementById("price").innerHTML = carRental.cars[select.value].price; 
     document.getElementById("available").innerHTML = carRental.cars[select.value].available;
-    
-}
+}; //overall,this portion of code, tells the browser to watch for change of the dropdown menu.  When there is a change, the price and availability display.
 
-function formValidation(){ //form validation - triggers alert message and prevents form submission until terms and condition boxed is checked *WORKS*
-	    if (!document.getElementById("confirmation").checked) {
+function rentCar() {
+    var val = document.getElementById("dropdown").value;
+    if (carRental.cars[val].available == 0) {
+        alert(" No Cars !");
+        event.preventDefault();
+        return false; //stops the function
+    }
+    if (!document.getElementById("confirmation").checked) {
         alert("You must agree to the terms and conditions");
         event.preventDefault();
-	    }
-}
-
-function storeRenterData() { // this function serves multiple purposes
-    var grabValue = document.getElementById("dropdown").value; //grabs the dropdown value: economy or SUV
-    
-    if (carRental.cars[grabValue].available == 0) { //if there are no cars, it willtrigger a message to tell the user
-        alert("No cars available, choose a different car");
-        event.preventDefault();
-        return false;
-    }
-    else { //if there are cars, submitting will subrtract 1 car from the total
-        carRental.cars[grabValue].available--;
-        document.getElementById("available").innerHTML = "Available" + carRental.cars[grabValue].available;
+	}
+    else {
+        carRental.cars[val].available--;
+        //redisplay cars
+        document.getElementById("available").innerHTML = carRental.cars[val].available;
+        //form validation
         var name = [];
         var car = [];
-        name.push(document.getElementById("available").value);
-        car.push(carRental.cars[grabValue].name);
-        alert("Car booked!");
+        name.push(document.getElementById("renterName").value);
+        car.push(carRental.cars[val].type);
+        console.log(name);
+        console.log(car);
+        //show reserve message
+        alert("Thanks for renting boi");
         event.preventDefault();
-    }
-}    
+        }
+}
